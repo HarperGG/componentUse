@@ -8,19 +8,23 @@ export const modalProps = {
   height: { type: Number },
   minHeight: { type: Number },
   // open drag
-  draggable: { type: Boolean, default: false },
+  draggable: { type: Boolean, default: true },
   centered: { type: Boolean },
   cancelText: { type: String, default: 'cancel' },
   okText: { type: String, default: 'confirm' },
-  actionText: { type: String, default: '确定' },
 
-  destroyOnClose: { type: Boolean },
+  defaultFullscreen: { type: Boolean },
+  // Can it be full screen
+  canFullscreen: { type: Boolean, default: true },
+  destroyOnClose: { type: Boolean, default: false },
   confirmLoading: { type: Boolean },
   showCancelBtn: { type: Boolean, default: true },
   cancelButtonProps: Object as PropType<ButtonProps>,
   showOkBtn: { type: Boolean, default: true },
-  okType: { type: String as PropType<ButtonType>, default: 'primary' },
-  okButtonProps: Object as PropType<ButtonProps>
+  okType: { type: String, default: 'primary' },
+  okButtonProps: Object as PropType<ButtonProps>,
+
+  closeFunc: Function as PropType<() => Promise<boolean>>
 }
 
 export const basicProps = Object.assign({}, modalProps, {
@@ -46,7 +50,7 @@ export const basicProps = Object.assign({}, modalProps, {
   zIndex: Number,
   autoFocus: {
     type: Boolean,
-    default: false
+    default: true
   },
   trapFocus: {
     type: Boolean,
@@ -59,6 +63,7 @@ export const basicProps = Object.assign({}, modalProps, {
   title: String,
   contentStyle: [Object, String] as PropType<CSSProperties | string>,
   headerStyle: [Object, String] as PropType<CSSProperties | string>,
+  headerExtraStyle: [Object, String] as PropType<CSSProperties | string>,
   footerStyle: [Object, String] as PropType<CSSProperties | string>,
   embedded: Boolean,
   segmented: {
@@ -71,12 +76,11 @@ export const basicProps = Object.assign({}, modalProps, {
   },
   bordered: {
     type: Boolean,
-    default: true
+    default: true as boolean
   },
-  // 默认打开关闭功能
   closable: {
     type: Boolean,
-    default: true
+    default: false as boolean
   },
   hoverable: Boolean,
   role: String,
@@ -115,12 +119,3 @@ export interface Segmented {
 }
 
 export type IconPlacement = 'left' | 'top'
-
-export type ButtonType =
-  | 'default'
-  | 'tertiary'
-  | 'primary'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'error'

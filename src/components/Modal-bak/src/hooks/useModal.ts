@@ -4,7 +4,7 @@ import {
   ModalProps,
   ReturnMethods,
   UseModalInnerReturnType
-} from '../types/modal'
+} from '../interface'
 import {
   ref,
   onUnmounted,
@@ -45,7 +45,6 @@ export function useModal(): UseModalReturnType {
     if (unref(loaded) && modalMethod === unref(modal)) return
 
     modal.value = modalMethod
-    console.log(modal)
     loaded.value = true
     modalMethod.emitVisible = (visible: boolean, uid: number) => {
       visibleData[uid] = visible
@@ -62,7 +61,6 @@ export function useModal(): UseModalReturnType {
 
   const methods: ReturnMethods = {
     setModalProps: (props: Partial<ModalProps>): void => {
-      console.log('props', props)
       getInstance()?.setModalProps(props)
     },
 
@@ -75,7 +73,6 @@ export function useModal(): UseModalReturnType {
     },
 
     openModal: <T = any>(show = true, data?: T, openOnSet = true): void => {
-      console.log(getInstance())
       getInstance()?.setModalProps({
         show
       })

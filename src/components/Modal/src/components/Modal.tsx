@@ -1,15 +1,14 @@
 import { NModal } from 'naive-ui'
-import { defineComponent, toRefs, unref } from 'vue'
+import { defineComponent, toRefs, unref, useAttrs } from 'vue'
 import { basicProps } from '../props'
-import { useModalDragMove } from '../hooks/useModalDrag'
-import { useAttrs } from '@/hooks/core/useAttrs'
-import { getSlot } from '@/utils/vue/resolve-slot'
+import { useModalDragMove } from '../../../Modal-bak/src/hooks/useModalDrag'
+import { extendSlots } from '@/utils/helper/tsxHelper'
 
 export default defineComponent({
   name: 'Modal',
   inheritAttrs: false,
   props: basicProps,
-  emits: ['cancel'],
+  emits: ['on-update:show'],
   setup(props, { slots, emit }) {
     const { show, draggable, destroyOnClose } = toRefs(props)
     const attrs = useAttrs()
@@ -19,13 +18,13 @@ export default defineComponent({
       draggable
     })
 
-    const onCancel = (e: Event) => {
-      emit('cancel', e)
+    const onUpdate = (value: boolean) => {
+      emit('on-update:show', value)
     }
 
     return () => {
-      const propsData = { ...unref(attrs), ...props, onCancel } as Recordable
-      return <NModal {...propsData}>{getSlot(slots)}</NModal>
+      const propsData = { ...unref(attrs), ...props, 'on-update:show': onUpdate } as Recordable
+      return <NModal {...propsData} v-slots={propsData.content ?? extendSlots(slots)}></NModal>
     }
   }
 })
