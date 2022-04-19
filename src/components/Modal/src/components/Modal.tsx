@@ -1,7 +1,6 @@
 import { NModal } from 'naive-ui'
 import { defineComponent, toRefs, unref, useAttrs } from 'vue'
 import { basicProps } from '../props'
-import { useModalDragMove } from '../../../Modal-bak/src/hooks/useModalDrag'
 import { extendSlots } from '@/utils/helper/tsxHelper'
 
 export default defineComponent({
@@ -12,11 +11,6 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const { show, draggable, destroyOnClose } = toRefs(props)
     const attrs = useAttrs()
-    useModalDragMove({
-      visible: show,
-      destroyOnClose,
-      draggable
-    })
 
     const onUpdate = (value: boolean) => {
       emit('on-update:show', value)
